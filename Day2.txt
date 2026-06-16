@@ -1,0 +1,70 @@
+AccountAdmin:
+
+show roles
+create role developers;
+show roles;
+
+create user dev_user1
+password='deve'
+default_role = developers
+must_change_password=false;
+
+grant role developers to user dev_user1;
+
+create database project_db;
+show databases
+grant all on database project_db to role developers;
+grant all on schema project_db.public to developers;
+
+create schema project_db.my_schema;
+
+create schema if not exists project_db.my_schema;
+show schemas
+
+drop schema project_db.my_schema;
+create schema if not exists project_db.my_schema comment= ' schema for developers data';
+
+create warehouse dev_warehouse
+warehouse_size = 'small'
+auto_suspend=60;
+
+show warehouses
+grant usage on warehouse dev_warehouse to role developers;
+
+grant all on schema project_db.my_schema to role developers;
+
+select * from customer;
+
+
+Dev_user1:
+show schemas
+show warehouses;
+
+create table student
+(roll_no int, s_name varchar,city varchar,pin int) 
+cluster by (roll_no);
+
+show tables
+
+
+insert into student values(1002,'Jacob','Chennai', 600021);
+insert into student values(1003,'Jacob','Chennai', 600021);
+insert into student values(1004,'Jacob','Chennai', 600021);
+insert into student values(1005,'Jacob','Chennai', 600021);
+insert into student values(1006,'Jacob','Chennai', 600021);
+insert into student values(1007,'Jacob','Chennai', 600021);
+insert into student values(1008,'Jacob','Chennai', 600021);
+insert into student values(1009,'Jacob','Chennai', 600021);
+insert into student values(1010,'Jacob','Chennai', 600021);
+insert into student values(1011,'Jacob','Chennai', 600021);
+insert into student values(1012,'Jacob','Chennai', 600021);
+
+select * from student
+
+
+create table customer as select * from snowflake_sample_data.tpcds_sf100tcl.customer;
+show tables
+
+select * from customer;
+select * from customer limit 500;
+alter table customer cluster by (c_customer_id);
