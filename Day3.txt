@@ -1,0 +1,93 @@
+desc table orders;
+select * from orders, supplier;
+select count(*) from orders;
+select count(*) from supplier;
+select * from orders cross join supplier;
+desc table part
+desc table partsupp
+--inner join
+select p.p_partkey,p.p_name,ps.ps_suppkey,ps.ps_supplycost 
+from part as p inner join partsupp as ps
+on p.p_partkey=ps.ps_partkey where p.p_partkey=60001 and ps.ps_suppkey=2508;
+
+select p.p_partkey,p.p_name,ps.ps_suppkey,ps.ps_supplycost 
+from part as p inner join partsupp as ps
+on p.p_partkey=ps.ps_partkey and p.p_partkey=60001 and ps.ps_suppkey=2508;
+
+--self join 
+select p1.p_name,p2.p_name, p1.p_mfgr
+from part as p1 inner join part p2
+on p1.p_mfgr=p2.p_mfgr
+and p1.p_partkey <> p2.p_partkey
+limit 500
+
+--non-equi join 
+
+desc table orders
+desc table lineitem
+select o.o_orderkey, l.l_linenumber,l.l_quantity
+from orders o inner join lineitem l 
+on o.o_orderkey = l.L_ORDERKEY
+and l.l_quantity > 40;
+
+
+
+desc table customer
+desc table orders
+desc table lineitem
+
+select c.c_name,o.o_orderkey,o.o_orderdate,l.l_partkey,l.l_quantity 
+from customer c join orders o
+on c.c_custkey= o.o_custkey 
+join lineitem l
+on o.o_orderkey = l.l_orderkey
+limit 1000
+
+desc table part
+desc table partsupp
+
+select p.p_partkey,p.p_name,ps.ps_suppkey 
+from part p left outer join partsupp ps 
+on p.p_partkey=ps.ps_partkey
+limit 1000
+
+select p.p_partkey,p.p_name,ps.ps_suppkey 
+from part p right outer join partsupp ps 
+on p.p_partkey=ps.ps_partkey
+limit 1000
+
+select p.p_partkey,p.p_name,ps.ps_suppkey 
+from part p full outer join partsupp ps 
+on p.p_partkey=ps.ps_partkey
+limit 1000
+
+select * from customer
+join orders  using(c_custkey)
+
+-- or 
+
+select * from customer join orders
+on c_custkey=o_custkey
+
+Dev_user1
+___________
+create table emp(emp_id int,emp_name varchar,emp_sal int)
+
+insert into emp values(100,'Jacob',4000)
+insert into emp values(102,'James',4000)
+insert into emp values(103,'Jones',4000)
+select * from emp;
+
+select a.emp_name,a.emp_sal 
+from emp a join emp b 
+on(a.emp_sal=b.emp_sal)
+
+select a.emp_name,a.emp_sal 
+from emp a join emp b 
+on(a.emp_sal=b.emp_sal)
+and a.emp_id<>b.emp_id
+
+select distinct a.emp_name,a.emp_sal 
+from emp a join emp b 
+on(a.emp_sal=b.emp_sal)
+and a.emp_id<>b.emp_id
